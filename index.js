@@ -3,6 +3,7 @@ const cors = require("cors");
 const path = require("path");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const dotenv = require("dotenv");
+const UserRoutes = require("./Routes/UserRoutes");
 
 dotenv.config();
 
@@ -33,6 +34,10 @@ async function run() {
     console.log(" Connected to MongoDB");
 
     const db = client.db("video-meet");
+    const usersCollection = db.collection("users");
+
+
+   app.use("/users", UserRoutes(usersCollection));
 
   } catch (err) {
     console.error("MongoDB connection failed:", err);
