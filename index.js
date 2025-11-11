@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
-import { fileURLToPath } from "url"; // add this
+import { fileURLToPath } from "url"; 
 import { MongoClient, ServerApiVersion } from "mongodb";
 import UserRoutes from "./Routes/userRoutes.js";
 import agoraRoutes from "./Routes/agora.js";
@@ -12,14 +12,16 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(cors({
+  origin: ["https://video-meet-client-seven.vercel.app"],
+  credentials: true
+}));
 app.use(express.json());
 
-// ES module এ __dirname তৈরি
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Static folder
+
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const uri = process.env.MONGO_URL;
