@@ -4,7 +4,7 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url"; // add this
 import { MongoClient, ServerApiVersion } from "mongodb";
-import UserRoutes from "./Routes/UserRoutes.js";
+import UserRoutes from "./Routes/userRoutes.js";
 import agoraRoutes from "./Routes/agora.js";
 import meetingsRoutes from "./Routes/meetings.js";
 
