@@ -1,43 +1,28 @@
 import express from "express";
-import dotenv from "dotenv";
 import pkg from "agora-access-token";
-
-const { RtcRole, RtcTokenBuilder } = pkg;
-dotenv.config();
+const { RtcTokenBuilder, RtcRole } = pkg;
 
 const router = express.Router();
 
-
-router.get("/agora-token/:channelName", (req, res) => {
-  const { channelName } = req.params;
-  const uid = parseInt(req.query.uid) || 0; 
-
+router.get("/agora-token", (req, res) => {
   const appId = process.env.AGORA_APP_ID;
   const appCertificate = process.env.AGORA_APP_CERT;
+  const channel = req.query.channel || "video-meet";
+  const uid = req.query.uid ? parseInt(req.query.uid) : 0;
+  const role = RtcRole.PUBLISHER;
+  const expireTime = 3600;
 
-  if (!appId || !appCertificate) {
-    return res.status(500).json({ error: "Agora App ID or Certificate missing" });
-  }
+  const token = RtcTokenBuilder.buildTokenWithUid(
+    appId,
+    appCertificate,
+    channel,
+    uid,
+    role,
+    Math.floor(Date.now() / 1000) + expireTime
+  );
 
-  const role = RtcRole.PUBLISHER; 
-  const expireTime = 3600; 
-  const currentTime = Math.floor(Date.now() / 1000);
-  const privilegeExpire = currentTime + expireTime;
-
-  try {
-    const token = RtcTokenBuilder.buildTokenWithUid(
-      appId,
-      appCertificate,
-      channelName,
-      uid,
-      role,
-      privilegeExpire
-    );
-    res.json({ token, uid });
-  } catch (error) {
-    console.error("Error generating Agora token:", error);
-    res.status(500).json({ error: "Failed to generate Agora token" });
-  }
+  res.json({ token });
 });
+
 
 export default router;
