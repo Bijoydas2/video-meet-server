@@ -44,7 +44,7 @@ async function run() {
     app.use("/api", agoraRoutes); 
     app.use("/api/meetings", meetingsRoutes); 
    app.use("/api/upload", UploadRoutes(meetingsCollection));    
-   
+   app.use("/api", agoraRoutes);
 
   } catch (err) {
     console.error("MongoDB connection failed:", err);
