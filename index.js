@@ -4,11 +4,10 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url"; 
 import { MongoClient, ServerApiVersion } from "mongodb";
-import UserRoutes from "./Routes/userRoutes.js";
 import agoraRoutes from "./Routes/agora.js";
 import meetingsRoutes from "./Routes/meetings.js";
-import uploadRoutes from "./Routes/upload.js";
-import aiSummaryRoutes from "./Routes/aiSummary.js";
+import UploadRoutes from "./Routes/upload.js";
+
 
 dotenv.config();
 const app = express();
@@ -37,14 +36,14 @@ async function run() {
 
     const db = client.db("video-meet");
     const usersCollection = db.collection("users");
-    const meetingsCollection= db.collection("meetings");
+        const meetingsCollection = db.collection("meetings");
 
     // Routes
     app.use("/users", UserRoutes(usersCollection)); 
     app.use("/api", agoraRoutes); 
     app.use("/api/meetings", meetingsRoutes); 
-    app.use("/api/upload", uploadRoutes);        
-    app.use("/api", aiSummaryRoutes(meetingsCollection));  
+   app.use("/api/upload", UploadRoutes(meetingsCollection));    
+    
 
   } catch (err) {
     console.error("MongoDB connection failed:", err);
