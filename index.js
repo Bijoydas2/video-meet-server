@@ -4,6 +4,7 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url"; 
 import { MongoClient, ServerApiVersion } from "mongodb";
+import UserRoutes from "./Routes/userRoutes.js";
 import agoraRoutes from "./Routes/agora.js";
 import meetingsRoutes from "./Routes/meetings.js";
 import UploadRoutes from "./Routes/upload.js";
@@ -43,7 +44,7 @@ async function run() {
     app.use("/api", agoraRoutes); 
     app.use("/api/meetings", meetingsRoutes); 
    app.use("/api/upload", UploadRoutes(meetingsCollection));    
-    
+   
 
   } catch (err) {
     console.error("MongoDB connection failed:", err);
